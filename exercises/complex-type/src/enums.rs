@@ -1,6 +1,7 @@
 // Exercise 1
 // Fill in the blank and fix the errors
 // Make it compile
+#[derive(Debug)]
 enum MessageOne {
     Quit,
     Move { x: i32, y: i32 },
@@ -8,11 +9,11 @@ enum MessageOne {
     ChangeColor(i32, i32, i32),
 }
 fn show_message(msg: MessageOne) {
-    println!("{}", msg);
+    println!("{:?}", msg);
 }
 
 fn exercise1() {
-    let msgs: __ = [
+    let msgs: [MessageOne; 3] = [
         MessageOne::Quit,
         MessageOne::Move { x: 1, y: 3 },
         MessageOne::ChangeColor(255, 255, 0),
@@ -27,10 +28,16 @@ fn exercise1() {
 // Fill in the blank and fix the errors
 // Make it compile
 // Run tests
+#[derive(Debug)]
 enum Message {
     // TODO: implement the message variant types based on their usage below
+    ChangeColor{color:(u8,u8,u8)},
+    Quit,
+    Echo{s:String},
+    Move{p:Point},
 }
 
+#[derive(Debug)]
 struct Point {
     x: u8,
     y: u8,
@@ -59,9 +66,16 @@ impl State {
         self.position = p;
     }
 
-    fn process(&mut self, message: Message) {
+    fn process(&mut self, message: Message){
         // TODO: create a match expression to process the different message variants
         // Remember: When passing a tuple as a function argument, you'll need extra parentheses: fn function((t, u, p, l, e))
+        match message {
+            Message::ChangeColor { color } => self.change_color(color),
+            Message::Quit => self.quit(),
+            Message::Echo { s } => self.echo(s),
+            Message::Move { p } => self.move_position(p),
+        }
+        
     }
 }
 
@@ -69,6 +83,7 @@ impl State {
 // Exercise 3
 // Fix the errors
 // Run tests
+#[derive(Debug, PartialEq)]
 enum Direction {
     North,
     East,
@@ -80,6 +95,10 @@ impl Direction {
     fn opposite(&self) -> Direction {
         match self {
             //TODO
+            Direction::North => Direction::East,
+            Direction::East => Direction::South,
+            Direction::South => Direction::West,
+            Direction::West => Direction::North,
         }
     }
 }
@@ -99,7 +118,10 @@ enum Operation {
 // Perform arithmetic operations
 fn perform_operation(operation: Operation, num1: f64, num2: f64) -> f64 {
     match operation {
-        // TODO
+        Operation::Add => num1 + num2,
+        Operation::Subtract => num1 - num2,
+        Operation::Divide => num1 / num2,
+        Operation::Multiply => num1 * num2,
     }
 }
 
